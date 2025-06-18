@@ -55,6 +55,14 @@
   <main>
     <div class="container hero-section text-center">
       <h2 class="mb-5">Admin Dashboard</h2>
+      
+       <span style="color:green" th:text="${session.pass}"></span>
+      	<span style="color:red" th:text="${session.fail}"></span>
+		<span th:text="${@generalService.removeMessage()}"></span>
+      
+      
+      
+      
       <div class="hero-buttons">
         <a href="#" class="btn btn-primary btn-lg">Add Product</a>
         <a href="#" class="btn btn-secondary btn-lg">Manage Products</a>

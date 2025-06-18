@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Products - FlipZone</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    html, body {
+      height: 100%;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+    }
+    main {
+      flex: 1;
+    }
+    .navbar-brand {
+      font-weight: bold;
+      font-size: 1.5rem;
+    }
+    .product-card {
+      height: 100%;
+    }
+    .product-img {
+      height: 150px;
+      object-fit: cover;
+    }
+    footer {
+      background-color: #343a40;
+      color: #fff;
+      padding: 15px 0;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-light bg-light px-4 justify-content-between">
+      <span class="navbar-brand mb-0 h1">FlipZone</span>
+  <a href="login.html" class="btn btn-danger">Logout</a>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="container py-4">
+
+    <!-- Search & Sort -->
+    <div class="row mb-4 align-items-center">
+      <div class="col-md-6 mb-2">
+        <input type="text" class="form-control" placeholder="Search products...">
+      	<button>Search</button>
+      </div>
+      <div class="col-md-6 mb-2 text-md-end">
+        <select class="form-select w-auto d-inline">
+          <option selected>Sort By</option>
+          <option value="1">Price: Low to High</option>
+          <option value="2">Price: High to Low</option>
+          <option value="3">In Stock</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Product Cards -->
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+      <!-- Card 1 -->
+      <div class="col">
+        <div class="card product-card h-100">
+          <img src="https://via.placeholder.com/300x150" class="card-img-top product-img" alt="Product Image">
+          <div class="card-body">
+            <h5 class="card-title">Wireless Earbuds</h5>
+            <p class="card-text">High quality sound and comfort fit. Long battery life.</p>
+            <p><strong>₹1999</strong> &middot; <small class="text-success">In Stock: 20</small></p>
+            <button class="btn btn-primary w-100">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="col">
+        <div class="card product-card h-100">
+          <img src="https://via.placeholder.com/300x150" class="card-img-top product-img" alt="Product Image">
+          <div class="card-body">
+            <h5 class="card-title">Smartwatch</h5>
+            <p class="card-text">Track your health and notifications with style.</p>
+            <p><strong>₹2499</strong> &middot; <small class="text-success">In Stock: 12</small></p>
+            <button class="btn btn-primary w-100">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="col">
+        <div class="card product-card h-100">
+          <img src="https://via.placeholder.com/300x150" class="card-img-top product-img" alt="Product Image">
+          <div class="card-body">
+            <h5 class="card-title">Bluetooth Speaker</h5>
+            <p class="card-text">Portable and powerful with deep bass.</p>
+            <p><strong>₹1599</strong> &middot; <small class="text-danger">In Stock: 5</small></p>
+            <button class="btn btn-primary w-100">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pagination -->
+    <nav class="mt-5 d-flex justify-content-center">
+      <ul class="pagination">
+        <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+        <li class="page-item"><a class="page-link" href="#">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item"><a class="page-link" href="#">Next</a></li>
+      </ul>
+    </nav>
+
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 FlipZone. All rights reserved.</p>
+    </div>
+  </footer>
+
+</body>
+</html>

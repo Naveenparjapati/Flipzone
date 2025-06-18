@@ -55,6 +55,14 @@ body {
 
 	<div class="login-card">
 		<div class="logo">FlipZone</div>
+		
+		
+		 <span style="color:green" th:text="${session.pass}"></span>
+      	<span style="color:red" th:text="${session.fail}"></span>
+		<span th:text="${@generalService.removeMessage()}"></span>
+		
+		
+		
 		<form action="/login" method="post">
 			<div class="mb-3">
 				<label for="email" class="form-label">Email address</label> <input
