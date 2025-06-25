@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.FlipZone.config.AES;
 import com.example.FlipZone.entity.Customer;
+import com.example.FlipZone.exception.NotLoggedInException;
 import com.example.FlipZone.repository.CustomerRepository;
 
 import jakarta.servlet.http.HttpSession;
@@ -29,7 +30,7 @@ public class CustomerService {
 	public String register(Customer customer, HttpSession session) {
 		if (customerRepository.existsByEmail(customer.getEmail())
 				|| customerRepository.existsByMobile(customer.getMobile())) {
-			session.setAttribute("fail", "Account Already Exists");
+			session.setAttribute("fail", "*Account Already Exists");
 			return "redirect:/customer/register";
 		} else {
 			customer.setPassword(AES.encrypt(customer.getPassword()));
@@ -67,5 +68,17 @@ public class CustomerService {
 		}
 	}
 	
+	
+	public String loadHome(HttpSession session) {
+		getCustomerFromSession(session);
+		return "customer-home.html";
+	}
+
+	public Customer getCustomerFromSession(HttpSession session) {
+		if(session.getAttribute("customer")==null)
+			throw new NotLoggedInException();
+		else
+			return (Customer) session.getAttribute("customer");
+	}
 
 }

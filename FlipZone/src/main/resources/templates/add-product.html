@@ -39,7 +39,7 @@
   <nav class="navbar navbar-expand-lg navbar-light bg-light px-4">
     <a class="navbar-brand" href="#">FlipZone Admin</a>
     <div class="ms-auto">
-      <a href="#" class="btn btn-outline-danger">Logout</a>
+      <a href="/logout" class="btn btn-outline-danger">Logout</a>
     </div>
   </nav>
 
@@ -47,30 +47,30 @@
   <main>
     <div class="form-section">
       <h2 class="mb-4 text-center">Add New Product</h2>
-      <form>
+      <form action="/admin/add-product" method="post" enctype="multipart/form-data">
         <div class="mb-3">
           <label for="productName" class="form-label">Product Name</label>
-          <input type="text" class="form-control" id="productName" placeholder="Enter product name" required>
+          <input type="text" name="name" class="form-control" id="productName" placeholder="Enter product name" required>
         </div>
 
         <div class="mb-3">
           <label for="productDescription" class="form-label">Description</label>
-          <textarea class="form-control" id="productDescription" rows="3" placeholder="Enter product description" required></textarea>
+          <textarea class="form-control"  name="description" id="productDescription" rows="3" placeholder="Enter product description" required></textarea>
         </div>
 
         <div class="mb-3">
           <label for="productStock" class="form-label">Stock</label>
-          <input type="number" class="form-control" id="productStock" placeholder="Available stock" required>
+          <input type="number"  name="stock" class="form-control" id="productStock" placeholder="Available stock" required>
         </div>
 
         <div class="mb-3">
           <label for="productPrice" class="form-label">Price (₹)</label>
-          <input type="number" class="form-control" id="productPrice" placeholder="Enter price in INR" required>
+          <input type="number" name="price" class="form-control" id="productPrice" placeholder="Enter price in INR" required>
         </div>
 
         <div class="mb-4">
           <label for="productImage" class="form-label">Product Image</label>
-          <input type="file" class="form-control" id="productImage" accept="image/*" required>
+          <input type="file"name="image" class="form-control" id="productImage" accept="image/*" required>
         </div>
 
         <div class="d-grid">
