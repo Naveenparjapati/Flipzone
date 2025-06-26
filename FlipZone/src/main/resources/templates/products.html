@@ -40,7 +40,7 @@
   <!-- Navbar -->
   <nav class="navbar navbar-light bg-light px-4 justify-content-between">
       <span class="navbar-brand mb-0 h1">FlipZone</span>
-  <a href="login.html" class="btn btn-danger">Logout</a>
+  <a href="/logout" class="btn btn-danger">Logout</a>
   </nav>
 
   <!-- Main Content -->
@@ -49,59 +49,32 @@
     <!-- Search & Sort -->
     <div class="row mb-4 align-items-center">
       <div class="col-md-6 mb-2">
-        <input type="text" class="form-control" placeholder="Search products...">
+        <form action="/customer/view-products">More actions
+        <input type="text" name="name" class="form-control" placeholder="Search products...">
       	<button>Search</button>
+      		</form>
       </div>
       <div class="col-md-6 mb-2 text-md-end">
-        <select class="form-select w-auto d-inline">
-          <option selected>Sort By</option>
-          <option value="1">Price: Low to High</option>
-          <option value="2">Price: High to Low</option>
-          <option value="3">In Stock</option>
-        </select>
+         <a href="/customer/view-products?sort=price"><button>Price: Low to High</button></a>
+          <a href="/customer/view-products?sort=price&desc=true"><button>Price: High to Low</button></a>
+          <a href="/customer/view-products?sort=stock"><button>In Stock</button></a>
       </div>
     </div>
 
     <!-- Product Cards -->
     <div class="row row-cols-1 row-cols-md-3 g-4">
-      <!-- Card 1 -->
-      <div class="col">
+       <div class="col" th:each="product:${products}">
         <div class="card product-card h-100">
-          <img src="https://via.placeholder.com/300x150" class="card-img-top product-img" alt="Product Image">
+         <img th:src="${product.imageLink}" class="card-img-top product-img" th:alt="${product.name}">
           <div class="card-body">
-            <h5 class="card-title">Wireless Earbuds</h5>
-            <p class="card-text">High quality sound and comfort fit. Long battery life.</p>
-            <p><strong>₹1999</strong> &middot; <small class="text-success">In Stock: 20</small></p>
+          <h5 class="card-title" th:text="${product.name}"></h5>
+            <p class="card-text" th:text="${product.description}"></p>
+            <p><strong th:text="${product.price}+' &#8377'"></strong> &middot; <small class="text-success" th:text="'In Stock: '+${product.stock}"></small></p>
             <button class="btn btn-primary w-100">Add to Cart</button>
           </div>
         </div>
       </div>
-
-      <!-- Card 2 -->
-      <div class="col">
-        <div class="card product-card h-100">
-          <img src="https://via.placeholder.com/300x150" class="card-img-top product-img" alt="Product Image">
-          <div class="card-body">
-            <h5 class="card-title">Smartwatch</h5>
-            <p class="card-text">Track your health and notifications with style.</p>
-            <p><strong>₹2499</strong> &middot; <small class="text-success">In Stock: 12</small></p>
-            <button class="btn btn-primary w-100">Add to Cart</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Card 3 -->
-      <div class="col">
-        <div class="card product-card h-100">
-          <img src="https://via.placeholder.com/300x150" class="card-img-top product-img" alt="Product Image">
-          <div class="card-body">
-            <h5 class="card-title">Bluetooth Speaker</h5>
-            <p class="card-text">Portable and powerful with deep bass.</p>
-            <p><strong>₹1599</strong> &middot; <small class="text-danger">In Stock: 5</small></p>
-            <button class="btn btn-primary w-100">Add to Cart</button>
-          </div>
-        </div>
-      </div>
+     
     </div>
 
     <!-- Pagination -->

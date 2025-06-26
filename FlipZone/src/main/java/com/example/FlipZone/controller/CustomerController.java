@@ -2,6 +2,7 @@ package com.example.FlipZone.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -52,8 +53,12 @@ public class CustomerController {
 	}
 
 	@GetMapping("/view-products")
-	public String viewProducts() {
-		return "products.html";
+	public String viewProducts(HttpSession session, ModelMap map,
+			@RequestParam(defaultValue = "") String name,
+			@RequestParam(defaultValue = "name") String sort,
+			@RequestParam(defaultValue = "false") boolean desc
+			) {
+		return customerService.viewProducts(session, map,name,sort,desc);
 	}
 
 	@GetMapping("/add-to-cart")

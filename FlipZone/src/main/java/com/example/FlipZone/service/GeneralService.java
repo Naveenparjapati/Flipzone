@@ -1,18 +1,24 @@
 package com.example.FlipZone.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.example.FlipZone.config.AES;
 import com.example.FlipZone.entity.Customer;
+import com.example.FlipZone.entity.Product;
 import com.example.FlipZone.repository.CustomerRepository;
+import com.example.FlipZone.repository.ProductRepository;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+
 
 @Service
 public class GeneralService {
@@ -23,6 +29,9 @@ public class GeneralService {
 	private String adminEmail;
 	@Value("${admin.password}")
 	private String adminPassword;
+	
+	@Autowired
+	ProductRepository productRepository;
 	
 	@Autowired
 	CustomerRepository customerRepository;
@@ -78,7 +87,15 @@ public class GeneralService {
 		return "redirect:/";
 	}
 
+    
+	public String loadMainPage(ModelMap map) {
+		List<Product> products=productRepository.findAll();
+		map.put("products", products);
+		return "main";
+	}
 
+	
+	
 
 
 }

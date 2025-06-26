@@ -72,25 +72,7 @@ public class AdminService {
 	}
 	
 	
-	private String saveToCloud(MultipartFile image) {
-		Cloudinary cloudinary = new Cloudinary(url);
-		try {
-			Map<String, String> map = ObjectUtils.asMap("folder", "flipzone");
-			Map data = cloudinary.uploader().upload(image.getBytes(), map);
-			return (String) data.get("url");
-		} catch (IOException e) {
-			e.printStackTrace();
-			return "";
-		}
-	}
-
 	
-	
-	
-	private void isLoggedIn(HttpSession session) {
-		if (session.getAttribute("admin") == null)
-			throw new NotLoggedInException();
-	}
 	
 	
 	
@@ -117,6 +99,27 @@ public class AdminService {
 			return "redirect:/admin/home";
 		}
 
+	}
+	
+	
+	private String saveToCloud(MultipartFile image) {
+		Cloudinary cloudinary = new Cloudinary(url);
+		try {
+			Map<String, String> map = ObjectUtils.asMap("folder", "flipzone");
+			Map data = cloudinary.uploader().upload(image.getBytes(), map);
+			return (String) data.get("url");
+		} catch (IOException e) {
+			e.printStackTrace();
+			return "";
+		}
+	}
+
+	
+	
+	
+	private void isLoggedIn(HttpSession session) {
+		if (session.getAttribute("admin") == null)
+			throw new NotLoggedInException();
 	}
 	
 }
