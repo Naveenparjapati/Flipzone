@@ -12,4 +12,6 @@ import com.example.FlipZone.entity.Product;
 public interface ProductRepository extends JpaRepository<Product, Long> {
 	List<Product> findByNameLike(String name, Sort sort);
 	Page<Product> findByNameLike(String name, PageRequest pageRequest);
+	Product findByNameAndDescriptionAndPrice(String name, String description, Double price);
+
 }

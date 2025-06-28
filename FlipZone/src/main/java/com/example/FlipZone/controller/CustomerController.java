@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -62,24 +63,26 @@ public class CustomerController {
 		return customerService.viewProducts(session, map,name,sort,desc,page);
 	}
 
-	@GetMapping("/add-to-cart")
-	public String addToCart() {
-		return "redirect:/customer/view-products";
+	@GetMapping("/add-to-cart/{id}")
+	public String addToCart(@PathVariable Long id,HttpSession session) {
+		return customerService.addToCart(id,session);
 	}
 
-	@GetMapping("/cart")
-	public String loadCart() {
-		return "cart.html";
+	
+	@GetMapping("/view-cart")
+	public String loadCart(HttpSession session,ModelMap map) {
+		return customerService.viewCart(session,map);
+	}
+	
+
+	@GetMapping("/cart/increase/{id}")
+	public String increaseItem(@PathVariable Long id,HttpSession session) {
+		return customerService.increaseItem(id,session);
 	}
 
-	@GetMapping("/cart/increase")
-	public String increaseItem() {
-		return "redirect:/customer/cart";
-	}
-
-	@GetMapping("/cart/decrease")
-	public String decreaseItem() {
-		return "redirect:/customer/cart";
+	@GetMapping("/cart/decrease/{id}")
+	public String decreaseItem(@PathVariable Long id,HttpSession session) {
+		return customerService.decreaseItem(id,session);
 	}
 	
 }

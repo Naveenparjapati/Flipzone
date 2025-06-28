@@ -1,5 +1,7 @@
 package com.example.FlipZone.service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +15,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
 
 import com.example.FlipZone.config.AES;
+import com.example.FlipZone.controller.AdminController;
 import com.example.FlipZone.entity.Customer;
+import com.example.FlipZone.entity.Item;
 import com.example.FlipZone.entity.Product;
 import com.example.FlipZone.exception.NotLoggedInException;
 import com.example.FlipZone.repository.CustomerRepository;
+import com.example.FlipZone.repository.ItemRepository;
 import com.example.FlipZone.repository.ProductRepository;
 
 import jakarta.servlet.http.HttpSession;
@@ -24,22 +29,29 @@ import jakarta.servlet.http.HttpSession;
 @Service
 public class CustomerService {
 
+	private final AdminController adminController;
+	
 	
 	@Autowired
 	JavaMailSender sender;
 
 	@Autowired
 	CustomerRepository customerRepository;
-	
+	@Autowired
+	ItemRepository itemRepository;
 
 	@Autowired
 	ProductRepository productRepository;
 	
-
+	
+	CustomerService(AdminController adminController) {
+		this.adminController = adminController;
+	}
+	
 	public String register(Customer customer, HttpSession session) {
 		if (customerRepository.existsByEmail(customer.getEmail())
 				|| customerRepository.existsByMobile(customer.getMobile())) {
-			session.setAttribute("fail", "*Account Already Exists");
+			session.setAttribute("fail", "* Account Already Exists");
 			return "redirect:/customer/register";
 		} else {
 			customer.setPassword(AES.encrypt(customer.getPassword()));
@@ -51,6 +63,8 @@ public class CustomerService {
 			return "redirect:/customer/otp";
 		}
 	}
+
+	
 	private void sendOtp(int otp, String email) {
 		SimpleMailMessage message = new SimpleMailMessage();
 		message.setTo(email);
@@ -112,4 +126,110 @@ public class CustomerService {
 			return (Customer) session.getAttribute("customer");
 	}
 
+	public String addToCart(Long id, HttpSession session) {
+		Customer customer = getCustomerFromSession(session);
+		Product product = productRepository.findById(id).get();
+		if (product.getStock() < 1) {
+			session.setAttribute("fail", "Out of Stock");
+			return "redirect:/customer/view-products";
+		} else {
+			product.setStock(product.getStock() - 1);
+			productRepository.save(product);
+			List<Item> items = customer.getItems();
+			if (items == null) {
+				items = new ArrayList<Item>();
+			}
+
+			boolean flag = true;
+			for (Item item : items) {
+				if (item.getName().equals(product.getName()) && item.getPrice().equals(product.getPrice())
+						&& item.getDescription().equals(product.getDescription())) {
+					item.setQuantity(item.getQuantity() + 1);
+					itemRepository.save(item);
+					flag = false;
+					break;
+				}
+			}
+
+			if (flag) {
+				Item item = new Item();
+				item.setImageLink(product.getImageLink());
+				item.setDescription(product.getDescription());
+				item.setName(product.getName());
+				item.setPrice(product.getPrice());
+				item.setQuantity(1);
+				itemRepository.save(item);
+				items.add(item);
+				customer.setItems(items);
+				customerRepository.save(customer);
+			}
+			session.setAttribute("customer", customerRepository.findById(customer.getId()).get());
+			session.setAttribute("pass", "Product Added to Cart");
+			return "redirect:/customer/view-products";
+		}
+	}
+
+	public String viewCart(HttpSession session, ModelMap map) {
+		Customer customer = getCustomerFromSession(session);
+		List<Item> items = customer.getItems();
+		if (items == null || items.isEmpty()) {
+			session.setAttribute("fail", "No Items in Cart");
+			return "redirect:/customer/home";
+		} else {
+			map.put("items", items);
+			map.put("total", items.stream().mapToDouble(x -> (x.getPrice() * x.getQuantity())).sum());
+			return "cart.html";
+		}
+	}
+
+	public String increaseItem(Long id, HttpSession session) {
+		Customer customer = getCustomerFromSession(session);
+		Item item = itemRepository.findById(id).get();
+
+		Product product = productRepository.findByNameAndDescriptionAndPrice(item.getName(), item.getDescription(),
+				item.getPrice());
+		if (product.getStock() > 0) {
+			item.setQuantity(item.getQuantity() + 1);
+			itemRepository.save(item);
+			
+			product.setStock(product.getStock() - 1);
+			productRepository.save(product);
+
+			session.setAttribute("pass", "Item Quantity Increased Success");
+		} else {
+			session.setAttribute("fail", "Out of Stock");
+		}
+
+		session.setAttribute("customer", customerRepository.findById(customer.getId()).get());
+		return "redirect:/customer/view-cart";
+	}
+
+	public String decreaseItem(Long id, HttpSession session) {
+		Customer customer = getCustomerFromSession(session);
+
+		Item item = itemRepository.findById(id).get();
+		Product product = productRepository.findByNameAndDescriptionAndPrice(item.getName(), item.getDescription(),
+				item.getPrice());
+
+		if (item.getQuantity() > 1) {
+			item.setQuantity(item.getQuantity() - 1);
+			itemRepository.save(item);
+		} else {
+			for (Item item2 : customer.getItems()) {
+				if (item2.getId().equals(item.getId())) {
+					customer.getItems().remove(item2);
+					break;
+				}
+			}
+			customerRepository.save(customer);
+			itemRepository.delete(item);
+		}
+		product.setStock(product.getStock() + 1);
+		productRepository.save(product);
+		session.setAttribute("customer", customerRepository.findById(customer.getId()).get());
+		session.setAttribute("pass", "Item Quantity Reduced Success");
+		return "redirect:/customer/view-cart";
+	}
+	
+	
 }

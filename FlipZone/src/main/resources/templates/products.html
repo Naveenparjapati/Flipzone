@@ -75,6 +75,11 @@ footer {
 			</div>
 		</div>
 
+<span style="color:green" th:text="${session.pass}"></span>
+      	<span style="color:red" th:text="${session.fail}"></span>
+		<span th:text="${@generalService.removeMessage()}"></span>
+
+
 		<!-- Product Cards -->
 		<div class="row row-cols-1 row-cols-md-3 g-4">
 
@@ -87,10 +92,13 @@ footer {
 						<h5 class="card-title" th:text="${product.name}"></h5>
 						<p class="card-text" th:text="${product.description}"></p>
 						<p>
-							<strong th:text="${product.price}+' &#8377'"></strong> &middot; <small
-								class="text-success" th:text="'In Stock: '+${product.stock}"></small>
+							<strong th:text="${product.price}+' &#8377'"></strong> &middot; <small>
+								class="text-success" th:if="${product.stock>0}" th:text="'In Stock: '+${product.stock}"></small>
+								
+								
 						</p>
-						<button class="btn btn-primary w-100">Add to Cart</button>
+						<a th:href="'/customer/add-to-cart/'+${product.id}"><button class="btn btn-primary w-100" th:if="${product.stock>0}">Add to Cart</button></a>
+						<button th:if="${product.stock==0}" disabled class="btn btn-primary w-100">Add to Cart</button>
 					</div>
 				</div>
 			</div>
