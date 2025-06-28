@@ -56,9 +56,10 @@ public class CustomerController {
 	public String viewProducts(HttpSession session, ModelMap map,
 			@RequestParam(defaultValue = "") String name,
 			@RequestParam(defaultValue = "name") String sort,
-			@RequestParam(defaultValue = "false") boolean desc
+			@RequestParam(defaultValue = "false") boolean desc,
+			@RequestParam(defaultValue = "1") Integer page
 			) {
-		return customerService.viewProducts(session, map,name,sort,desc);
+		return customerService.viewProducts(session, map,name,sort,desc,page);
 	}
 
 	@GetMapping("/add-to-cart")

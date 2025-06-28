@@ -2,100 +2,126 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Products - FlipZone</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <style>
-    html, body {
-      height: 100%;
-    }
-    body {
-      display: flex;
-      flex-direction: column;
-    }
-    main {
-      flex: 1;
-    }
-    .navbar-brand {
-      font-weight: bold;
-      font-size: 1.5rem;
-    }
-    .product-card {
-      height: 100%;
-    }
-    .product-img {
-      height: 150px;
-      object-fit: cover;
-    }
-    footer {
-      background-color: #343a40;
-      color: #fff;
-      padding: 15px 0;
-      text-align: center;
-    }
-  </style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Products - FlipZone</title>
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+	rel="stylesheet">
+<style>
+html, body {
+	height: 100%;
+}
+
+body {
+	display: flex;
+	flex-direction: column;
+}
+
+main {
+	flex: 1;
+}
+
+.navbar-brand {
+	font-weight: bold;
+	font-size: 1.5rem;
+}
+
+.product-card {
+	height: 100%;
+}
+
+.product-img {
+	height: 150px;
+	object-fit: cover;
+}
+
+footer {
+	background-color: #343a40;
+	color: #fff;
+	padding: 15px 0;
+	text-align: center;
+}
+</style>
 </head>
 <body>
-
+  
   <!-- Navbar -->
-  <nav class="navbar navbar-light bg-light px-4 justify-content-between">
-      <span class="navbar-brand mb-0 h1">FlipZone</span>
-  <a href="/logout" class="btn btn-danger">Logout</a>
-  </nav>
+	<nav class="navbar navbar-light bg-light px-4 justify-content-between">
+		<a href="/customer/home"><span class="navbar-brand mb-0 h1">FlipZone</span></a>
+		<a href="/logout" class="btn btn-danger">Logout</a>
+	</nav>
 
-  <!-- Main Content -->
-  <main class="container py-4">
+	<!-- Main Content -->
+	<main class="container py-4">
 
-    <!-- Search & Sort -->
-    <div class="row mb-4 align-items-center">
-      <div class="col-md-6 mb-2">
-        <form action="/customer/view-products">More actions
-        <input type="text" name="name" class="form-control" placeholder="Search products...">
-      	<button>Search</button>
-      		</form>
-      </div>
-      <div class="col-md-6 mb-2 text-md-end">
-         <a href="/customer/view-products?sort=price"><button>Price: Low to High</button></a>
-          <a href="/customer/view-products?sort=price&desc=true"><button>Price: High to Low</button></a>
-          <a href="/customer/view-products?sort=stock"><button>In Stock</button></a>
-      </div>
-    </div>
+		<!-- Search & Sort -->
+		<div class="row mb-4 align-items-center">
+			<div class="col-md-6 mb-2">
+				<form action="/customer/view-products">
+					<input type="text" name="name" class="form-control"
+						placeholder="Search products...">
+					<button>Search</button>
+				</form>
+			</div>
 
-    <!-- Product Cards -->
-    <div class="row row-cols-1 row-cols-md-3 g-4">
-       <div class="col" th:each="product:${products}">
-        <div class="card product-card h-100">
-         <img th:src="${product.imageLink}" class="card-img-top product-img" th:alt="${product.name}">
-          <div class="card-body">
-          <h5 class="card-title" th:text="${product.name}"></h5>
-            <p class="card-text" th:text="${product.description}"></p>
-            <p><strong th:text="${product.price}+' &#8377'"></strong> &middot; <small class="text-success" th:text="'In Stock: '+${product.stock}"></small></p>
-            <button class="btn btn-primary w-100">Add to Cart</button>
-          </div>
-        </div>
-      </div>
-     
-    </div>
 
-    <!-- Pagination -->
-    <nav class="mt-5 d-flex justify-content-center">
-      <ul class="pagination">
-        <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
-        <li class="page-item active"><a class="page-link" href="#">1</a></li>
-        <li class="page-item"><a class="page-link" href="#">2</a></li>
-        <li class="page-item"><a class="page-link" href="#">3</a></li>
-        <li class="page-item"><a class="page-link" href="#">Next</a></li>
-      </ul>
-    </nav>
+			<div class="col-md-6 mb-2 text-md-end">
 
-  </main>
+				<a href="/customer/view-products?sort=price"><button>Price:
+						Low to High</button></a> <a href="/customer/view-products?sort=price&desc=true"><button>Price:
+						High to Low</button></a> <a href="/customer/view-products?sort=stock&desc=true"><button>In
+						Stock</button></a>
 
-  <!-- Footer -->
-  <footer>
-    <div class="container">
-      <p>&copy; 2025 FlipZone. All rights reserved.</p>
-    </div>
-  </footer>
+			</div>
+		</div>
+
+		<!-- Product Cards -->
+		<div class="row row-cols-1 row-cols-md-3 g-4">
+
+
+			<div class="col" th:each="product:${products}">
+				<div class="card product-card h-100">
+					<img th:src="${product.imageLink}" class="card-img-top product-img"
+						th:alt="${product.name}">
+					<div class="card-body">
+						<h5 class="card-title" th:text="${product.name}"></h5>
+						<p class="card-text" th:text="${product.description}"></p>
+						<p>
+							<strong th:text="${product.price}+' &#8377'"></strong> &middot; <small
+								class="text-success" th:text="'In Stock: '+${product.stock}"></small>
+						</p>
+						<button class="btn btn-primary w-100">Add to Cart</button>
+					</div>
+				</div>
+			</div>
+
+
+		</div>
+
+		<!-- Pagination -->
+		<nav class="mt-5 d-flex justify-content-center">
+			<ul class="pagination">
+				<li class="page-item" th:if="${prev}"><a class="page-link"
+					th:href="'/customer/view-products?page='+${page-1}">Previous</a></li>
+				
+				<li th:each="i : ${#numbers.sequence(1, total)}" class="page-item"
+					th:classappend="${i} == ${page} ? 'active'"><a
+					class="page-link" th:href="'/customer/view-products?page='+${i}"
+					th:text="${i}"></a></li>
+					
+				<li class="page-item" th:if="${next}"><a class="page-link"
+					th:href="'/customer/view-products?page='+${page+1}">Next</a></li>
+			</ul>
+		</nav>
+
+	</main>
+
+	<!-- Footer -->
+	<footer>
+		<div class="container">
+			<p>&copy; 2025 FlipZone. All rights reserved.</p>
+		</div>
+	</footer>
 
 </body>
 </html>

@@ -25,6 +25,12 @@ public class AdminController {
 	public String loadAdminHome(HttpSession session) {
 		return adminService.loadHome(session);
 	}
+	
+	@GetMapping("/add-dummy-records")
+	public String addDummy(HttpSession session) {
+		return adminService.addDummyProducts(session);
+	}
+	
 
 	@GetMapping("/add-product")
 	public String loadAddProduct(HttpSession session) {

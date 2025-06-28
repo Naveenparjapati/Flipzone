@@ -1,9 +1,10 @@
 package com.example.FlipZone.service;
 
-import java.util.List;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.mail.MailAuthenticationException;
 import org.springframework.mail.SimpleMailMessage;
@@ -84,23 +85,21 @@ public class CustomerService {
      
 	
 	
-	public String viewProducts(HttpSession session, ModelMap map, String name, String sort, boolean desc) {
+	public String viewProducts(HttpSession session, ModelMap map, String name, String sort, boolean desc,Integer page) {
 		getCustomerFromSession(session);
 		
-		Sort way = null;
-		if (desc)
-			way = Sort.by(sort).descending();
-		else
-			way = Sort.by(sort);
-			
-		List<Product> products = productRepository.findByNameLike("%" + name + "%", way);
-		if (products.isEmpty()) {
-			session.setAttribute("fail", "No Products Present");
-			return "redirect:/customer/home";
-		} else {
-			map.put("products", products);
-			return "products.html";
-		}
+		Sort way = desc ? Sort.by(sort).descending() : Sort.by(sort);
+
+		Page<Product> productsPage = productRepository.findByNameLike("%" + name + "%", PageRequest.of(page-1, 9, way));
+		
+		
+		map.put("page", productsPage.getNumber()+1);
+		map.put("total", productsPage.getTotalPages());
+		map.put("prev", productsPage.hasPrevious());
+		map.put("next", productsPage.hasNext());
+		map.put("products", productsPage.getContent());
+		return "products.html";
+		
 	}
 	
 	
